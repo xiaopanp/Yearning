@@ -13,7 +13,7 @@ if [ ! -d "/var/lib/mysql/Yearning" ]; then
 fi
 
 sed -i "s/8000/${YPort}/" /usr/share/nginx/html/static/js/app.b534e9fe0e47062ceee8.js
-sed -i "s/CONF_DATA.ipaddress/CONF_DATA.ipaddress,${YHost}:${YPort}/" /opt/Yearning/src/settingConf/settings.py
+sed -i "s/CONF_DATA.ipaddress/CONF_DATA.ipaddress,'${YHost}:${YPort}'/" /opt/Yearning/src/settingConf/settings.py
 sed -i "s/ipaddress =.*/ipaddress=$HOST/" deploy.conf
 
 /usr/sbin/nginx
