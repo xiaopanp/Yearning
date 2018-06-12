@@ -3,6 +3,8 @@ chown -R mysql:mysql /var/lib/mysql /var/run/mysqld
 /usr/bin/mysqld_safe &
 sleep 3
 
+mysql -uroot -e "grant all on *.* to root@localhost identified by '${MYSQLPASSWORD}'; flush privileges;"
+
 if [ ! -d "/var/lib/mysql/Yearning" ]; then
   mysql -e "create database Yearning character set 'utf8' collate 'utf8_general_ci' ;"
   python3 manage.py makemigrations
