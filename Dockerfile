@@ -1,4 +1,4 @@
-FROM centos
+ROM centos
 
 MAINTAINER cookieYe 2017-12-28
 
@@ -14,19 +14,25 @@ RUN rpm -Uvh http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos
 
 RUN wget https://www.python.org/ftp/python/3.6.4/Python-3.6.4.tar.xz && tar xvf Python-3.6.4.tar.xz && \
     cd Python-3.6.4 && ./configure && make && make install && \
-    rm -rf /tmp/Python* && mysql_install_db && chmod -R 777 /var/lib/mysql 
+    rm -rf /tmp/Python* && mysql_install_db && chmod -R 777 /var/lib/mysql
 
 WORKDIR /opt/
 
 
-RUN git clone https://github.com/cookieY/Yearning.git && \
+RUN git clone https://github.com/xiaopanp/Yearning.git && \
     cd /opt/Yearning/src && pip3 install -r requirements.txt && \
     cp -rf /opt/Yearning/install/connections.py /usr/local/lib/python3.6/site-packages/pymysql/ && \
     cp -rf /opt/Yearning/install/cursors.py /usr/local/lib/python3.6/site-packages/pymysql/ && \
-    cp -rf /opt/Yearning/install/docker_start.sh /usr/local/bin/ && \ 
+    cp -rf /opt/Yearning/install/docker_start.sh /usr/local/bin/ && \
     cp -rf /opt/Yearning/webpage/dist/* /usr/share/nginx/html/ && \
     cd /opt/Yearning/install/ && tar xvf inception.tar && \
+    cp -fr /opt/Yearning/src/deploy.conf.template /opt/Yearning/src/deploy.conf && \
+    cd /opt/Yearning/src && sed -i "s/backuppassword =.*/backuppassword = root/" deploy.conf && \
+    cd /opt/Yearning/src && sed -i "s/password =.*/password = root/" deploy.conf && \
     chmod 755 /usr/local/bin/docker_start.sh
+
+VOLUME "/usr/share/nginx"
+VOLUME "/opt/Yearning"
 
 WORKDIR /opt/Yearning/src
 
