@@ -22,7 +22,6 @@ WORKDIR /opt/
 
 RUN git clone https://github.com/xiaopanp/Yearning.git && \
     cd /opt/Yearning/src && pip3 install -r requirements.txt && \
-    mkdir /usr/share/nginx/html/ && \
     cp -rf /opt/Yearning/install/connections.py /usr/local/lib/python3.6/site-packages/pymysql/ && \
     cp -rf /opt/Yearning/install/cursors.py /usr/local/lib/python3.6/site-packages/pymysql/ && \
     cp -rf /opt/Yearning/install/docker_start.sh /usr/local/bin/ && \
