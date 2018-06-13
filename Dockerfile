@@ -33,7 +33,7 @@ RUN git clone https://github.com/xiaopanp/Yearning.git && \
 
 VOLUME "/usr/share/nginx"
 VOLUME "/opt/Yearning"
-
+VOLUME "/var/lib/mysql"
 WORKDIR /opt/Yearning/src
 
 ENTRYPOINT docker_start.sh
