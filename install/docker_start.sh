@@ -9,7 +9,9 @@ if [ ! -d "/var/lib/mysql/Yearning" ]; then
   mysql -uroot -p"$MYSQLPASSWORD" -e "create database Yearning character set 'utf8' collate 'utf8_general_ci' ;"
   python3 manage.py makemigrations
   python3 manage.py migrate
-  echo "from core.models import Account; Account.objects.create_user(username='admin', password='123456', group='admin',is_staff=1)" | python3 manage.py shell
+  cd /opt/Yearning/src
+echo "from core.models import Account; Account.objects.create_user(username='admin', password='"123456"', group='admin',is_staff=1)" | python3 manage.py shell
+echo "from core.models import grained;grained.objects.get_or_create(username='admin', permissions={'ddl': '1', 'ddlcon': [], 'dml': '1', 'dmlcon': [], 'dic': '1', 'diccon': [], 'dicedit': '0', 'query': '1', 'querycon': [], 'user': '1', 'base': '1', 'dicexport': '0', 'person': []})" | python3 manage.py shell
 fi
 
 
