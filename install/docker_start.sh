@@ -16,6 +16,7 @@ fi
 
 
 sed -i "s/8000/${YApiPort}/" /usr/share/nginx/html/static/js/app.b534e9fe0e47062ceee8.js
+sed -i "s/8000/${YApiPort}/" /usr/share/nginx/html/static/js/app.b534e9fe0e47062ceee8.js
 sed -i "56,56d"  /opt/Yearning/src/settingConf/settings.py
 sed -i "55a \    '127.0.0.1:8080'," /opt/Yearning/src/settingConf/settings.py
 sed -i "56a \    '${YHost}:${YPort}'" /opt/Yearning/src/settingConf/settings.py
