@@ -5,10 +5,7 @@ MAINTAINER cookieYe 2017-12-28
 EXPOSE 8000
 
 EXPOSE 80
-
-VOLUME "/usr/share/nginx"
-VOLUME "/opt/Yearning"
-VOLUME "/var/lib/mysql"
+ 
 
 WORKDIR /tmp
 
