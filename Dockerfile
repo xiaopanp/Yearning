@@ -6,6 +6,10 @@ EXPOSE 8000
 
 EXPOSE 80
 
+VOLUME "/usr/share/nginx"
+VOLUME "/opt/Yearning"
+VOLUME "/var/lib/mysql"
+
 WORKDIR /tmp
 
 RUN rpm -Uvh http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm && \
@@ -31,9 +35,6 @@ RUN git clone https://github.com/xiaopanp/Yearning.git && \
     cd /opt/Yearning/src && sed -i "s/password =.*/password = root/" deploy.conf && \
     chmod 755 /usr/local/bin/docker_start.sh
 
-VOLUME "/usr/share/nginx"
-VOLUME "/opt/Yearning"
-VOLUME "/var/lib/mysql"
 WORKDIR /opt/Yearning/src
 
 ENTRYPOINT docker_start.sh
