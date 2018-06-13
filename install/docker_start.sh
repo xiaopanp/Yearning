@@ -24,6 +24,7 @@ sed -i "51,51d" /opt/Yearning/src/settingConf/settings.py
 sed -i "50a \     CONF_DATA.ipaddress," /opt/Yearning/src/settingConf/settings.py
 sed -i "51a \    '${YHost}:${YPort}'" /opt/Yearning/src/settingConf/settings.py
 sed -i "s/ipaddress =.*/ipaddress=$HOST/" deploy.conf
+sed -i "s/inception_remote_system_password =/inception_remote_system_password =${MYSQLPASSWORD}/" /opt/Yearning/install/inception/bin/inc.cnf
 
 /usr/sbin/nginx
 /opt/Yearning/install/inception/bin/Inception --defaults-file=/opt/Yearning/install/inception/bin/inc.cnf &
