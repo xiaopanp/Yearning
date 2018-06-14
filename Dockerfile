@@ -6,7 +6,6 @@ EXPOSE 8000
 
 EXPOSE 80
 
-
 WORKDIR /tmp
 
 RUN rpm -Uvh http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm && \
@@ -21,6 +20,7 @@ WORKDIR /opt/
  
 COPY git clone https://github.com/xiaopanp/Yearning.git && \
     cd /opt/Yearning/src && pip3 install -r requirements.txt
+
 RUN cd /opt/Yearning && git pull && sleep 1 && \
     cp -rf /opt/Yearning/install/connections.py /usr/local/lib/python3.6/site-packages/pymysql/ && \
     cp -rf /opt/Yearning/install/cursors.py /usr/local/lib/python3.6/site-packages/pymysql/ && \
@@ -32,7 +32,6 @@ RUN cd /opt/Yearning && git pull && sleep 1 && \
     cd /opt/Yearning/src && sed -i "s/password =.*/password = root/" deploy.conf && \
     chmod 755 /usr/local/bin/docker_start.sh
  
-
 WORKDIR /opt/Yearning/src
 
 ENTRYPOINT docker_start.sh
