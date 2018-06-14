@@ -1,5 +1,6 @@
 #/bin/bash
 chown -R mysql:mysql /var/lib/mysql /var/run/mysqld
+chown -R mysql:mysql /opt/mysql/data /var/run/mysqld
 /usr/bin/mysqld_safe & sleep 10
 
 mysql -uroot -e "grant all on *.* to root@localhost identified by 'root'; flush privileges;"
