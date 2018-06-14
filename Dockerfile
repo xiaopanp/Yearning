@@ -5,8 +5,7 @@ MAINTAINER xiaopanp 2018-06-14
 EXPOSE 8000
 
 EXPOSE 80
- 
-RUN cd /opt/ && git clone https://github.com/xiaopanp/Yearning.git
+
 
 WORKDIR /tmp
 
@@ -19,6 +18,8 @@ RUN wget https://www.python.org/ftp/python/3.6.4/Python-3.6.4.tar.xz && tar xvf 
     rm -rf /tmp/Python* && mysql_install_db && chmod -R 777 /var/lib/mysql 
 
 WORKDIR /opt/
+ 
+RUN git clone https://github.com/xiaopanp/Yearning.git
 
 RUN cd /opt/Yearning/src && pip3 install -r requirements.txt && \
     cp -rf /opt/Yearning/install/connections.py /usr/local/lib/python3.6/site-packages/pymysql/ && \
