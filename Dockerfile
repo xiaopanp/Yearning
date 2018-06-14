@@ -39,8 +39,6 @@ RUN git clone https://github.com/xiaopanp/Yearning.git && \
     chmod 755 /usr/local/bin/docker_start.sh
 
 VOLUME /var/lib/mysql
-    
-RUN  /usr/bin/mysqld_safe &sleep 10 && mysql -uroot -e "grant all on *.* to root@localhost identified by 'root'; flush privileges;"
 
 WORKDIR /opt/Yearning/src
 
