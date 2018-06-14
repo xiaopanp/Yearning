@@ -6,7 +6,7 @@ EXPOSE 8000
 
 EXPOSE 80
  
-RUNUN cd /opt/ && git clone https://github.com/xiaopanp/Yearning.git
+RUN cd /opt/ && git clone https://github.com/xiaopanp/Yearning.git
 
 WORKDIR /tmp
 
