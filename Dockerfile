@@ -37,8 +37,7 @@ RUN git clone https://github.com/xiaopanp/Yearning.git && \
     cd /opt/Yearning/src && sed -i "s/backuppassword =.*/backuppassword = root/" deploy.conf && \
     cd /opt/Yearning/src && sed -i "s/password =.*/password = root/" deploy.conf && \
     chmod 755 /usr/local/bin/docker_start.sh
-
-VOLUME /var/lib/mysql
+ 
 
 WORKDIR /opt/Yearning/src
 
