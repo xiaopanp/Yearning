@@ -18,7 +18,7 @@ RUN wget https://www.python.org/ftp/python/3.6.4/Python-3.6.4.tar.xz && tar xvf 
 
 WORKDIR /opt/
  
-COPY git clone https://github.com/xiaopanp/Yearning.git && \
+COPY ./ /opt/Yearning && \
     cd /opt/Yearning/src && pip3 install -r requirements.txt
 
 RUN cd /opt/Yearning && git pull && sleep 1 && \
