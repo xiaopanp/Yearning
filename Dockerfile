@@ -18,8 +18,9 @@ RUN wget https://www.python.org/ftp/python/3.6.4/Python-3.6.4.tar.xz && tar xvf 
 
 WORKDIR /opt/
  
-COPY ./ /opt/Yearning/ && \
-    cd /opt/Yearning/src && pip3 install -r requirements.txt
+COPY ./ /opt/Yearning/
+
+RUN  cd /opt/Yearning/src && pip3 install -r requirements.txt
 
 RUN cd /opt/Yearning/ && git pull && sleep 1 && \
     cp -rf /opt/Yearning/install/connections.py /usr/local/lib/python3.6/site-packages/pymysql/ && \
