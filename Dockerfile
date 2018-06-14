@@ -13,13 +13,13 @@ RUN rpm -Uvh http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos
     rpm -Uvh http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpm && \
     yum -y install wget gcc nginx mysql-community-server zlib* openssl-devel git; yum clean all && \
     rm -rf /var/lib/mysql && mkdir -p /var/lib/mysql /var/run/mysqld && \
-	   chown -R mysql:mysql /var/lib/mysql /var/run/mysqld && \
+    chown -R mysql:mysql /var/lib/mysql /var/run/mysqld && \
     # ensure that /var/run/mysqld (used for socket and lock files) is writable regardless of the UID our mysqld instance ends up having at runtime
-	   chmod 777 /var/run/mysqld && \
+    chmod 777 /var/run/mysqld && \
     # comment out a few problematic configuration values
-	   find /etc/mysql/ -name '*.cnf' -print0 | xargs -0 grep -lZE '^(bind-address|log)' | xargs -rt -0 sed -Ei 's/^(bind-address|log)/#&/' && \
+    find /etc/mysql/ -name '*.cnf' -print0 | xargs -0 grep -lZE '^(bind-address|log)' | xargs -rt -0 sed -Ei 's/^(bind-address|log)/#&/' && \
     # don't reverse lookup hostnames, they are usually another container
-	   echo '[mysqld]\nskip-host-cache\nskip-name-resolve' > /etc/mysql/conf.d/docker.cnf
+    echo '[mysqld]\nskip-host-cache\nskip-name-resolve' > /etc/mysql/conf.d/docker.cnf
 
 RUN wget https://www.python.org/ftp/python/3.6.4/Python-3.6.4.tar.xz && tar xvf Python-3.6.4.tar.xz && \
     cd Python-3.6.4 && ./configure && make && make install && \
