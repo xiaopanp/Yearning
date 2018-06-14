@@ -4,7 +4,7 @@ chown -R mysql:mysql /var/lib/mysql /var/run/mysqld
 
 mysql -uroot -e "grant all on *.* to root@localhost identified by 'root'; flush privileges;"
 echo "-------------------------------修改密码---------------------"
-if [ ! -d "/var/lib/mysql/Yearning" ]; then
+if [ ! -d "/opt/mysql/data/Yearning" ]; then
   echo "-------------------------------初始化数据库---------------------"
   mysql -uroot -p"$MYSQLPASSWORD" -e "create database Yearning character set 'utf8' collate 'utf8_general_ci' ;"
   python3 manage.py makemigrations
