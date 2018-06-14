@@ -23,8 +23,7 @@ COPY ./ /opt/Yearning/
 RUN  cd /opt/Yearning/src && pip3 install -r requirements.txt
 
 RUN cd /opt/Yearning/ && git pull && sleep 1 && \
-    mkdir -p /opt/mysql/data && chmod -R 777 /opt/mysql/data && \
-    cp -rf /opt/Yearning/my.cnf /etc/my.cnf && \
+    mkdir -p /opt/mysql/data && chmod -R 777 /opt/mysql/data && \ 
     cp -rf /opt/Yearning/install/connections.py /usr/local/lib/python3.6/site-packages/pymysql/ && \
     cp -rf /opt/Yearning/install/cursors.py /usr/local/lib/python3.6/site-packages/pymysql/ && \
     cp -rf /opt/Yearning/install/docker_start.sh /usr/local/bin/ && \
