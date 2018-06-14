@@ -6,18 +6,13 @@ EXPOSE 8000
 
 EXPOSE 80
  
+RUNUN cd /opt/ && git clone https://github.com/xiaopanp/Yearning.git
 
 WORKDIR /tmp
 
 RUN rpm -Uvh http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm && \
     rpm -Uvh http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpm && \
-    yum -y install wget gcc nginx mysql-community-server zlib* openssl-devel git; yum clean all && \
-    rm -rf /var/lib/mysql && mkdir -p /var/lib/mysql /var/run/mysqld && \
-    chown -R mysql:mysql /var/lib/mysql /var/run/mysqld && \
-    # ensure that /var/run/mysqld (used for socket and lock files) is writable regardless of the UID our mysqld instance ends up having at runtime
-    chmod 777 /var/run/mysqld 
-    # comment out a few problematic configuration values
-    # find /etc/mysql/ -name '*.cnf' -print0 | xargs -0 grep -lZE '^(bind-address|log)' | xargs -rt -0 sed -Ei 's/^(bind-address|log)/#&/'
+    yum -y install wget gcc nginx mysql-community-server zlib* openssl-devel git; yum clean all
 
 RUN wget https://www.python.org/ftp/python/3.6.4/Python-3.6.4.tar.xz && tar xvf Python-3.6.4.tar.xz && \
     cd Python-3.6.4 && ./configure && make && make install && \
@@ -25,7 +20,6 @@ RUN wget https://www.python.org/ftp/python/3.6.4/Python-3.6.4.tar.xz && tar xvf 
 
 WORKDIR /opt/
 
-COPY -rf * /opt/Yearning
 RUN cd /opt/Yearning/src && pip3 install -r requirements.txt && \
     cp -rf /opt/Yearning/install/connections.py /usr/local/lib/python3.6/site-packages/pymysql/ && \
     cp -rf /opt/Yearning/install/cursors.py /usr/local/lib/python3.6/site-packages/pymysql/ && \
