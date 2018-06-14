@@ -5,8 +5,8 @@ chown -R mysql:mysql /opt/mysql/data /var/run/mysqld
 mysqladmin shutdown & sleep 10
 cp -rf /var/lib/mysql/* /opt/mysql/data/
 cp -rf /opt/Yearning/my.cnf /etc/my.cnf
-mysql_install_db
 chown -R mysql:mysql /opt/mysql/data /var/run/mysqld
+mysql_install_db
 /usr/bin/mysqld_safe & sleep 10
 mysql -uroot -e "grant all on *.* to root@localhost identified by 'root'; flush privileges;"
  
