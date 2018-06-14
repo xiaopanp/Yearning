@@ -1,5 +1,5 @@
 #/bin/bash
-chown -R mysql:mysql /var/lib/mysql /var/run/mysqld
+# chown -R mysql:mysql /var/lib/mysql /var/run/mysqld
 /usr/bin/mysqld_safe &
 sleep 10
 
