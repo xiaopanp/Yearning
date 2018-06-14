@@ -1,7 +1,9 @@
 #/bin/bash
 chown -R mysql:mysql /var/lib/mysql /var/run/mysqld
 chown -R mysql:mysql /opt/mysql/data /var/run/mysqld
-cp -rf /opt/Yearning/my.cnf /etc/my.cnf
+if [  -d "/opt/mysql/data/Yearning" ]; then 
+  cp -rf /opt/Yearning/my.cnf /etc/my.cnf
+fi
 /usr/bin/mysqld_safe & sleep 10
 
  
@@ -12,8 +14,8 @@ if [ ! -d "/opt/mysql/data/Yearning" ]; then
   chown -R mysql:mysql /opt/mysql/data /var/run/mysqld
   mysql_install_db
   /usr/bin/mysqld_safe & sleep 10
-  echo "grant all on *.* to root@localhost identified by '{$MYSQLPASSWORD}'; flush privileges;"
-  mysql -uroot -e "grant all on *.* to root@localhost identified by '{$MYSQLPASSWORD}'; flush privileges;"
+  echo "---------------创建数据库------------------"
+  mysql -uroot -e "grant all on *.* to root@localhost identified by 'root'; flush privileges;"
   mysql -uroot -p"$MYSQLPASSWORD" -e "create database Yearning character set 'utf8' collate 'utf8_general_ci' ;"
   python3 manage.py makemigrations
   python3 manage.py migrate
