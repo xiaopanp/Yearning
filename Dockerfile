@@ -21,7 +21,7 @@ RUN rpm -Uvh http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos
 
 RUN wget https://www.python.org/ftp/python/3.6.4/Python-3.6.4.tar.xz && tar xvf Python-3.6.4.tar.xz && \
     cd Python-3.6.4 && ./configure && make && make install && \
-    rm -rf /tmp/Python* && mysql_install_db && chmod -R 777 /var/lib/mysql
+    rm -rf /tmp/Python* && mysql_install_db
 
 WORKDIR /opt/
 
@@ -37,8 +37,10 @@ RUN git clone https://github.com/xiaopanp/Yearning.git && \
     cd /opt/Yearning/src && sed -i "s/backuppassword =.*/backuppassword = root/" deploy.conf && \
     cd /opt/Yearning/src && sed -i "s/password =.*/password = root/" deploy.conf && \
     chmod 755 /usr/local/bin/docker_start.sh
-    
+
 VOLUME /var/lib/mysql
+    
+RUN mysql -uroot -e "grant all on *.* to root@localhost identified by 'root'; flush privileges;"
 
 WORKDIR /opt/Yearning/src
 
