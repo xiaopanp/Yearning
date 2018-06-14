@@ -1,6 +1,6 @@
 FROM centos
 
-MAINTAINER cookieYe 2017-12-28
+MAINTAINER xiaopanp 2018-06-14
 
 EXPOSE 8000
 
