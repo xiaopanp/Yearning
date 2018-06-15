@@ -92,6 +92,17 @@
 - 我的工单
 ![](http://oy0f4k5qi.bkt.clouddn.com/myorder.png)
 
+- Docker
+docker run -it --name yearning  \
+    -e HOST=127.0.0.1:8000  \
+    -e YHost=112.124.117.107  \
+    -e YPort=8083 -e YApiPort=8084  \
+    -e MYSQLPASSWORD=root  \
+    -e ADDRESS=127.0.0.1:8000  \
+    -p 8083:80  \
+    -p 8084:8000  \
+    -v /mnt/docker/yearning/mysql:/opt/mysql/data/ \
+    -d xyfm/yearning:v1
 
 ## License
 
