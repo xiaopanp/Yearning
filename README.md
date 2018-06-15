@@ -95,7 +95,7 @@
 - Docker
 docker run -it --name yearning  \
     -e HOST=127.0.0.1:8000  \
-    -e YHost=112.124.117.107  \
+    -e YHost=192.168.0.3  \
     -e YPort=8083 -e YApiPort=8084  \
     -e MYSQLPASSWORD=root  \
     -e ADDRESS=127.0.0.1:8000  \
