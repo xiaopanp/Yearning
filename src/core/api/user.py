@@ -1,13 +1,12 @@
 import logging
 import json
-from libs import baseview
-from libs import util
+from libs import baseview, util
 from core.task import grained_permissions
 from libs.serializers import UserINFO
 from rest_framework.response import Response
 from django.http import HttpResponse
 from django.contrib.auth import authenticate
-from django.db.models import Count
+from django.db import transaction
 from rest_framework_jwt.settings import api_settings
 from core.models import (
     Account,
@@ -34,7 +33,7 @@ PERMISSION = {
 }
 
 
-class userinfo(baseview.SuperUserpermissions):
+class userinfo(baseview.BaseView):
 
     '''
         User Management interface
@@ -69,7 +68,7 @@ class userinfo(baseview.SuperUserpermissions):
                 return HttpResponse(status=500)
             else:
                 try:
-                    page_number = Account.objects.aggregate(alter_number=Count('id'))
+                    page_number = Account.objects.count()
                     start = int(page) * 10 - 10
                     end = int(page) * 10
                     info = Account.objects.all()[start:end]
@@ -122,13 +121,13 @@ class userinfo(baseview.SuperUserpermissions):
                                     i['permissions'][c] = list(filter(lambda x: x != username, i['permissions'][c]))
                             grained.objects.filter(username=i['username']).update(permissions=i['permissions'])
                     grained.objects.filter(username=username).update(permissions=permission)
-                    if group == 'admin':
+                    if group == 'admin' or group == 'perform':
                         Account.objects.filter(username=username).update(
                             group=group,
                             department=department,
                             is_staff=1
                             )
-                    elif group == 'guest':
+                    else:
                         Account.objects.filter(username=username).update(
                             group=group,
                             department=department, 
@@ -166,7 +165,7 @@ class userinfo(baseview.SuperUserpermissions):
             return HttpResponse(status=500)
         else:
             try:
-                if group == 'admin':
+                if group == 'admin' or group == 'perform':
                     user = Account.objects.create_user(
                         username=username,
                         password=password,
@@ -202,10 +201,11 @@ class userinfo(baseview.SuperUserpermissions):
                         if isinstance(i['permissions'][c], list) and c == 'person':
                             i['permissions'][c] = list(filter(lambda x: x != args, i['permissions'][c]))
                     grained.objects.filter(username=i['username']).update(permissions=i['permissions'])
-            Account.objects.filter(username=args).delete()
-            Usermessage.objects.filter(to_user=args).delete()
-            Todolist.objects.filter(username=args).delete()
-            grained.objects.filter(username=args).delete()
+            with transaction.atomic():
+                Account.objects.filter(username=args).delete()
+                Usermessage.objects.filter(to_user=args).delete()
+                Todolist.objects.filter(username=args).delete()
+                grained.objects.filter(username=args).delete()
             return Response('%s--用户已删除!' % args)
         except Exception as e:
             CUSTOM_ERROR.error(f'{e.__class__.__name__}: {e}')
@@ -280,39 +280,35 @@ class ldapauth(baseview.AnyLogin):
     '''
     def post(self, request, args: str = None):
         try:
-            user = request.data['username']
+            username = request.data['username']
             password = request.data['password']
         except KeyError as e:
             CUSTOM_ERROR.error(f'{e.__class__.__name__}: {e}')
         else:
             jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
             jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
-            valite = util.auth(username=user,password=password)
+            valite = util.auth(username=username, password=password)
             if valite:
                 try:
-                    user = Account.objects.filter(username=user).get()
-                    permissions = authenticate(username=user, password=password)
-                    if permissions is not None and permissions.is_active:
-                        permissions.set_password(password)
-                        permissions.save()
-                        payload = jwt_payload_handler(permissions)
-                        token = jwt_encode_handler(payload)
-                        return Response({'token': token, 'res': '','permissions':user.group})
-                    else:
-                        return Response({'token':'null', 'res': '账号认证失败!'})
+                    user = Account.objects.filter(username=username).first()
+                    user.set_password(password)
+                    user.save()
+                    payload = jwt_payload_handler(user)
+                    token = jwt_encode_handler(payload)
+                    return Response({'token': token, 'res': '', 'permissions': user.group})
                 except:
                     permissions = Account.objects.create_user(
-                        username=user,
+                        username=username,
                         password=password,
                         is_staff=0,
                         group='guest')
                     permissions.save()
-                    grained.objects.get_or_create(username=user, permissions=PERMISSION)
-                    _user = authenticate(username=user, password=password)
+                    grained.objects.get_or_create(username=username, permissions=PERMISSION)
+                    _user = authenticate(username=username, password=password)
                     token = jwt_encode_handler(jwt_payload_handler(_user))
-                    return Response({'token':token,'res': '', 'permissions': 'guest'})
+                    return Response({'token': token, 'res': '', 'permissions': 'guest'})
             else:
-                return Response({'token':'null', 'res': 'ldap账号认证失败,请检查ldap账号或ldap配置!'})
+                return Response({'token': 'null', 'res': 'ldap账号认证失败,请检查ldap账号或ldap配置!'})
 
 
 class login_auth(baseview.AnyLogin):

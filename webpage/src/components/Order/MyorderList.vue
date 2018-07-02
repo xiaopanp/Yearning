@@ -37,7 +37,7 @@
       <Row>
         <Card>
           <div class="step-header-con">
-            <h3 style="margin-left: 35%">Yearning SQL平台审核工单</h3>
+            <h3>Yearning SQL平台审核工单</h3>
           </div>
           <p class="step-content"></p>
           <Form class="step-form" :label-width="100">
@@ -80,7 +80,7 @@
 <script>
 import util from '../../libs/util'
 import axios from 'axios'
-import Cookies from 'js-cookie'
+//
 export default {
   name: 'myorder-list',
   data () {
@@ -170,7 +170,7 @@ export default {
         axios.post(`${util.url}/sqlsyntax/`, {
           'data': JSON.stringify(this.formItem),
           'sql': JSON.stringify(_tmpsql),
-          'user': Cookies.get('user'),
+          'user': sessionStorage.getItem('user'),
           'type': this.dmlorddl,
           'id': this.formItem.bundle_id
         })
@@ -187,7 +187,7 @@ export default {
         axios.post(`${util.url}/sqlsyntax/`, {
           'data': JSON.stringify(this.formItem),
           'sql': JSON.stringify(this.ddlsql),
-          'user': Cookies.get('user'),
+          'user': sessionStorage.getItem('user'),
           'type': this.dmlorddl,
           'id': this.formItem.bundle_id
         })
